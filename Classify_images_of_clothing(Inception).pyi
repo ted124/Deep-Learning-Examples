@@ -4,7 +4,7 @@ import os
 import tensorflow as tf
 from tensorflow import keras
 
-os.environ["PATH"] += os.pathsep + 'D:\\软件\\graphviz\\bin'
+os.environ["PATH"] += os.pathsep + 'D:\\software\\graphviz\\bin'
 
 # Helper libraries
 
