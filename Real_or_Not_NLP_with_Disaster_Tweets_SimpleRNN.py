@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from tensorflow import keras
 from tensorflow.keras import preprocessing
-from tensorflow.keras.layers import Dense, Embedding, Dropout, SimpleRNN
+from tensorflow.keras.layers import Dense, Embedding, Dropout, SimpleRNN, SpatialDropout1D
 from tensorflow.keras.models import Sequential
 
 # path to data and other settings
@@ -55,19 +55,18 @@ f.close()
 # create model
 model = Sequential()
 model.add(Embedding(10000, embedding_dim, input_length=maxlen))
-model.add(Dropout(0.02))
-model.add(SimpleRNN(64))
+model.add(SimpleRNN(64, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dropout(0.02))
 model.add(Dense(64, activation='sigmoid'))
 model.add(Dense(1, activation='sigmoid'))
 
 # compile
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
+model.compile(optimizer=keras.optimizers.Adam(learning_rate=3e-4), loss='binary_crossentropy', metrics=['acc'])
 model.summary()
 
 # set Embedding to not trainable
 model.layers[0].set_weights([embedding_matrix])
-model.layers[0].trainable = False
+# model.layers[0].trainable = False
 
 # fit
 history = model.fit(x_train,
