@@ -43,7 +43,7 @@ f = open(os.path.join(path, 'glove.6B.300d.txt'), 'rb')
 # generate pretrained embedding_matrix
 for line in f:
     values = line.split()
-    word = values[0]
+    word = values[0].decode('utf-8')
     coefs = np.asarray(values[1:], dtype='float32')
     if word in word_index:
         if word_index[word] < max_words:
@@ -66,7 +66,7 @@ model.summary()
 
 # set Embedding to not trainable
 model.layers[0].set_weights([embedding_matrix])
-# model.layers[0].trainable = False
+model.layers[0].trainable = True
 
 # fit
 history = model.fit(x_train,
